@@ -10,7 +10,7 @@ function App() {
   const [result, setResult] = useState();
   const [index, setIndex] = useState(0);
   const [state, setState] = useState(false);
-  const [message, setMessage] = useState([]);
+  const [message, setMessage] = useState('hidden');
   let newId = 0;
 
   useEffect(() => {
@@ -34,7 +34,9 @@ function App() {
               .then((response) => {  
                 console.log("response", response.data);
                 values.push(response.data);
-                console.log("values", values[values.length-2]);
+                console.log("values", values);
+                if(values[values.length-2] > response.data) setMessage("visible");
+                else setMessage("hidden");
                 setResult(response.data);
                 setIndex(index + 1);
               })
@@ -43,7 +45,7 @@ function App() {
               });
           }
         } else clearInterval(timer);
-      }, 1000);
+      }, 2000);
       return () => clearInterval(timer);
     } else setResult();
   }, [state]);
@@ -75,6 +77,18 @@ function App() {
       >
         Demo Start
       </Button> */}
+      {/* <h5
+        className="sentiment-text"
+        style={{ marginBottom: "20px", color: "red", paddingTop: "0px", marginTop: "0px", visibility: message }}
+      >
+        Please slow down
+      </h5> */}
+      {/* <h1
+        className="sentiment-text"
+        style={{ fontSize: '40px', marginBottom: "0px", color: "red", paddingTop: "0px", marginTop: "0px", visibility: message }}
+      >
+        Please slow down!
+      </h1> */}
       <h1
         className="sentiment-text"
         style={{ fontSize: '50px', marginTop: "20px", color: "white", paddingBottom: "0px", marginBottom: "0px" }}
@@ -96,6 +110,12 @@ function App() {
         {result >=0 ? <h1 style={{color: "white", fontSize: '150px', paddingBottom: "0px", marginBottom: "0px" }}>{result}</h1> : <h1 style={{color: "white", fontSize: '150px', paddingBottom: "0px", marginBottom: "0px" }}>0</h1>}
         <h1 style={{color: "white", fontSize: '80px', paddingTop: "0px", marginTop: "0px" }}>kmh</h1>
       </p>
+      <h1
+        className="sentiment-text"
+        style={{ fontSize: '40px', marginBottom: "20px", color: "red", paddingTop: "0px", marginTop: "0px", visibility: message }}
+      >
+        Please slow down!
+      </h1>
       <FormControlLabel
         control={
           <Switch checked={state} onChange={handleChange} name="checkedB" color="primary"/>
@@ -104,10 +124,10 @@ function App() {
       />
       <Button
         variant="contained"
-        onClick={() => setState(true)}
+        onClick={() => setState(!state)}
         style={{ marginTop: "20px" }}
       >
-        Demo Start
+        {`Demo ${state ? "Stop" : "Start"}`}
       </Button>
     </div>
   );
