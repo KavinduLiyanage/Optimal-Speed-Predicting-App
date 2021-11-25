@@ -30,12 +30,12 @@ function App() {
           formData.append("longitude", vehicleLocations[newId].longitude);
           if (formData) {
             axios
-              .post("http://192.168.1.104:5000/predict", formData)
+              .post("http://ec2-18-191-101-121.us-east-2.compute.amazonaws.com:5000/predict", formData)
               .then((response) => {  
                 console.log("response", response.data);
                 values.push(response.data);
                 console.log("values", values);
-                if(values[values.length-2] > response.data) setMessage("visible");
+                if(values[values.length-2] > response.data && values[values.length-3] > response.data) setMessage("visible");
                 else setMessage("hidden");
                 setResult(response.data);
                 setIndex(index + 1);
@@ -91,7 +91,7 @@ function App() {
       </h1> */}
       <h1
         className="sentiment-text"
-        style={{ fontSize: '50px', marginTop: "20px", color: "white", paddingBottom: "0px", marginBottom: "0px" }}
+        style={{ fontSize: '50px', marginTop: "10px", color: "white", paddingBottom: "0px", marginBottom: "0px" }}
       >
         Your
       </h1>
@@ -110,12 +110,12 @@ function App() {
         {result >=0 ? <h1 style={{color: "white", fontSize: '150px', paddingBottom: "0px", marginBottom: "0px" }}>{result}</h1> : <h1 style={{color: "white", fontSize: '150px', paddingBottom: "0px", marginBottom: "0px" }}>0</h1>}
         <h1 style={{color: "white", fontSize: '80px', paddingTop: "0px", marginTop: "0px" }}>kmh</h1>
       </p>
-      <h1
+      {/* <h1
         className="sentiment-text"
         style={{ fontSize: '40px', marginBottom: "20px", color: "red", paddingTop: "0px", marginTop: "0px", visibility: message }}
       >
         Please slow down!
-      </h1>
+      </h1> */}
       <FormControlLabel
         control={
           <Switch checked={state} onChange={handleChange} name="checkedB" color="primary"/>
